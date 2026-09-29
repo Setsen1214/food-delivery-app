@@ -1,5 +1,7 @@
 import express from "express";
+
 import { db } from "./database/db.js";
+import foodRouter from "./router/food/food.router.js"
 
 import cors from "cors";
 import { authRouter } from "./router/auth/auth.js";
@@ -8,6 +10,7 @@ const port = 8000;
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 app.use("/auth", authRouter);
+app.use("/food", foodRouter);
 
 db()
     .then(() => {

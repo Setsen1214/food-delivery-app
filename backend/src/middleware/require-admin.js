@@ -1,14 +1,15 @@
-import "dotenv/config";
-import mongoose from "mongoose";
-
-const connectDB = async () => {
-    try {
-        await mongoose.connect(process.env.MONGODB_URI);
-
-        console.log("MongoDB connected!");
-    } catch (error) {
-        console.log("MongoDB connection error:", error.message);
+export const requireAdmin = (req, res, next) => {
+    if (!req.user) {
+        return res.status(401).json({
+            message: "Authentication required",
+        });
     }
-};
 
-export default connectDB;
+    if (req.user.role !== "ADMIN") {
+        return res.status(403).json({
+            message: "Admin access required",
+        });
+    }
+
+    next();
+};
