@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { server } from "../../../_api/api";
@@ -50,45 +51,103 @@ export default function LoginForm() {
     };
 
     return (
-        <div className="auth-box">
-            <h1>Login</h1>
+        <main className="w-screen min-h-screen flex bg-white">
 
-            <p>Login to your account</p>
+            {/* LEFT SIDE - LOGIN FORM */}
+            <section className="flex-[0_0_40%] flex items-center justify-center px-12 py-12">
+                <div className="w-full max-w-md">
 
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    required
-                />
+                    {/* BACK BUTTON */}
+                    <button
+                        type="button"
+                        onClick={() => router.back()}
+                        className="w-9 h-9 border border-gray-200 rounded-md flex items-center justify-center text-gray-600 mb-10"
+                    >
+                        ←
+                    </button>
 
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    required
-                />
+                    {/* TITLE */}
+                    <h1 className="text-2xl font-semibold text-gray-900">
+                        Welcome back
+                    </h1>
 
-                {error && (
-                    <p className="text-red-500">
-                        {error}
+                    <p className="text-sm text-gray-500 mt-2">
+                        Log in to your account
                     </p>
-                )}
 
-                <button type="submit" disabled={loading}>
-                    {loading ? "Logging in..." : "Login"}
-                </button>
-            </form>
+                    {/* FORM */}
+                    <form
+                        onSubmit={handleSubmit}
+                        className="mt-8"
+                    >
+                        <input
+                            type="email"
+                            placeholder="Enter your email address"
+                            value={email}
+                            onChange={(event) =>
+                                setEmail(event.target.value)
+                            }
+                            className={`w-full h-10 border rounded-md px-3 text-sm outline-none ${error
+                                    ? "border-red-400"
+                                    : "border-gray-200"
+                                }`}
+                            required
+                        />
 
-            <p>
-                Don't have an account?{" "}
-                <Link href="/sign-up">
-                    Sign up
-                </Link>
-            </p>
-        </div>
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(event) =>
+                                setPassword(event.target.value)
+                            }
+                            className="w-full h-10 border border-gray-200 rounded-md px-3 text-sm outline-none mt-3"
+                            required
+                        />
+
+                        {error && (
+                            <p className="text-red-500 text-xs mt-2">
+                                {error}
+                            </p>
+                        )}
+
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full h-10 mt-4 rounded-md bg-gray-300 text-white text-sm font-medium"
+                        >
+                            {loading ? "Logging in..." : "Let's Go"}
+                        </button>
+                    </form>
+
+                    {/* SIGN UP */}
+                    <p className="text-center text-xs text-gray-500 mt-5">
+                        Don't have an account?{" "}
+                        <Link
+                            href="/sign-up"
+                            className="text-blue-600 hover:underline"
+                        >
+                            Sign up
+                        </Link>
+                    </p>
+
+                </div>
+            </section>
+
+            {/* RIGHT SIDE - IMAGE */}
+            <section className="flex-[0_0_60%] p-6">
+                <div className="relative w-full h-[calc(100vh-48px)] overflow-hidden rounded-xl">
+                    <Image
+                        src="/images/delivery.png"
+                        alt="Food delivery"
+                        fill
+                        priority
+                        sizes="60vw"
+                        className="object-cover object-center"
+                    />
+                </div>
+            </section>
+
+        </main>
     );
 }

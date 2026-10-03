@@ -19,10 +19,18 @@ const publicUser = (user) => {
     }
 }
 const createToken = (user) => {
-    return jwt.sign({ email: user.email, role: user.role }, JWT_SECRET, {
-        expiresIn: "7d"
-    })
-}
+    return jwt.sign(
+        {
+            userId: user._id.toString(),
+            email: user.email,
+            role: user.role,
+        },
+        JWT_SECRET,
+        {
+            expiresIn: "7d",
+        }
+    );
+};
 
 export const loginController = async (req, res) => {
     const { user } = req;

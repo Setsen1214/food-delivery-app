@@ -3,12 +3,14 @@
 import { useEffect, useState } from "react";
 import { server } from "../_api/api";
 import FoodCard from "./components/food-card";
-
+import Header from "./components/header";
+import Hero from "./components/hero";
 export default function MainPage() {
     const [foods, setFoods] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [cart, setCart] = useState([]);
+    const categories = [...new Set(foods.map((food) => food.category))];
 
     const fetchFoods = async () => {
         try {
@@ -84,84 +86,41 @@ export default function MainPage() {
     }
 
     return (
-        <main className="p-6">
-            <h1 className="text-3xl font-bold mb-6">
-                Food Delivery
-            </h1>
-            <p className="mb-6">
-                Cart items: {cart.length}
-            </p>
-            <div className="mt-10 border rounded-xl p-6">
-                <h2 className="text-2xl font-bold mb-4">
-                    Your Cart
-                </h2>
+        <>
+            <Header cartCount={cart.length} />
 
-                {cart.length === 0 ? (
-                    <p>Your cart is empty.</p>
-                ) : (
-                    <div className="flex flex-col gap-4">
-                        {cart.map((item) => (
-                            <div
-                                key={item._id}
-                                className="border rounded-lg p-4"
-                            >
-                                <h3 className="font-semibold">
-                                    {item.name}
-                                </h3>
+            <Hero />
 
-                                <p>
-                                    ₮{item.price.toLocaleString()}
-                                </p>
+            <main
+                id="menu"
+                className="bg-[#3f3f3f] min-h-screen px-6 py-12"
+            >
+                <div className="max-w-7xl mx-auto">
 
-                                <div className="flex items-center gap-3 mt-2">
-                                    <button
-                                        onClick={() => decreaseQuantity(item._id)}
-                                        className="border px-3 py-1 rounded"
-                                    >
-                                        -
-                                    </button>
 
-                                    <span>{item.quantity}</span>
+                    <h2 className="text-2xl font-semibold text-white mb-8">
+                        Appetizers
+                    </h2>
 
-                                    <button
-                                        onClick={() => increaseQuantity(item._id)}
-                                        className="border px-3 py-1 rounded"
-                                    >
-                                        +
-                                    </button>
 
-                                    <button
-                                        onClick={() => removeFromCart(item._id)}
-                                        className="ml-4 text-red-500"
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-
-                        <div className="border-t pt-4">
-                            <p className="text-xl font-bold">
-                                Total: ₮{cartTotal.toLocaleString()}
-                            </p>
+                    {foods.length === 0 ? (
+                        <p className="text-white">
+                            No foods available yet.
+                        </p>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {foods.map((food) => (
+                                <FoodCard
+                                    key={food._id}
+                                    food={food}
+                                    onAdd={handleAddToCart}
+                                />
+                            ))}
                         </div>
-                    </div>
-                )}
-            </div>
+                    )}
 
-            {foods.length === 0 ? (
-                <p>No foods available yet.</p>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {foods.map((food) => (
-                        <FoodCard
-                            key={food._id}
-                            food={food}
-                            onAdd={handleAddToCart}
-                        />
-                    ))}
                 </div>
-            )}
-        </main>
+            </main>
+        </>
     );
 }

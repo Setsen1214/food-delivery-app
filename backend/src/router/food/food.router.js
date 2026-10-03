@@ -7,8 +7,11 @@ import { deleteFood } from "../../controllers/auth/food/delete.js";
 
 import { requireToken } from "../../middleware/require-token.js";
 import { requireAdmin } from "../../middleware/require-admin.js";
+import { uploadImage } from "../../controllers/auth/food/upload-image.js";
+import { upload } from "../../middleware/upload.js";
 
 const foodRouter = Router();
+foodRouter.post("/upload-image", requireToken, requireAdmin, upload.single("image"), uploadImage);
 
 foodRouter.get("/", getFoods);
 
