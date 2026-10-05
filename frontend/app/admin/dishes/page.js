@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { server } from "../../_api/api";
 import DishFormDialog from "./_features/dish-form-dialog";
 import ConfirmDialog from "../_components/confirm-dialog";
+import { useTheme } from "../_components/theme-context";
 
 export default function DishesPage() {
     const [foods, setFoods] = useState([]);
@@ -17,6 +18,7 @@ export default function DishesPage() {
     const [image, setImage] = useState(null);
     const [editingFood, setEditingFood] = useState(null);
     const [deletingFood, setDeletingFood] = useState(null);
+    const { darkMode } = useTheme();
 
     const getFoods = async () => {
         try {
@@ -94,7 +96,13 @@ export default function DishesPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#252624] text-white">
+        <div
+            className={
+                darkMode
+                    ? "min-h-screen bg-[#252624] text-white"
+                    : "min-h-screen bg-gray-100 text-black"
+            }
+        >
 
             {/* TOP BAR */}
             <header className="h-20 border-b border-white/10 px-8 flex items-center justify-between">
